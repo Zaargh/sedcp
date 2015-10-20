@@ -42,13 +42,28 @@ if [ ! -w "$TO" ]; then
     exit 1
 fi
 
+if [[ ! $EXTFROM == "."* ]]; then
+    echo "Error: $EXTFROM is not valid file extension (eg. .txt, .c)."
+    exit 1
+fi
+if [[ ! $EXTTO == "."* ]]; then
+    echo "Error: $EXTTO is not valid file extension (eg. .txt, .c)."
+    exit 1
+fi
 
+ORIGINALS=`find $FROM -maxdepth 1 -name \*$EXTFROM`
+CHECKIFFOUND=`echo "$ORIGINALS" | grep -c "."`
+if [ $CHECKIFFOUND -eq 0 ]; then
+    echo "Found no files matching criteria. Terminating."
+    exit 0
+fi
+echo "${ORIGINALS}" | xargs -I {} cp {} $3
 
-#TODO Lack of dot error
+FROMESCAPED=`echo "$FROM" | sed 's/\//\\\//g' `
+TOESCAPED=`echo $TO | sed 's/\//\\\//g' `
 
-
-FILELIST=`find $FROM -name \*$EXTFROM`
-
-
-echo "${FILELIST}" | xargs -I {} cp {} $3
-#| sed 's/'$1'/'$3'/'  
+#COPIES=`echo "$ORIGINALS" | sed "s/"$FROMESCAPED"/"$TOESCAPED"/"`
+#RENAMED=`echo "$COPIES" | sed "s/"$EXTFROM"/"$EXTTO"/"`
+echo "$FROMESCAPED"
+#echo "$COPIES"
+#echo "$RENAMED"
