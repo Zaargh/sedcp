@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #	Wykorzystując program sed, napisać skrypt w języku powłoki, służący do kopiowania zestawu plików między podanymi katalogami i zmiany rozszerzenia nazw tych plików. Postać wywołania skryptu:
 #	
